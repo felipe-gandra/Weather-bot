@@ -16,12 +16,13 @@ def gerarTexto(cidade):
         texto = "Essa cidade não foi encontrada"
         return texto
 
-
+    #le as informações e separa as que serao mostradas
     temperatura = info['main']['temp'] - 273
     sensacao = info['main']['feels_like'] - 273
     umidade = info['main']['humidity']
     geral = info['weather'][0]['main']
 
+    #traduz as codições para o português
     if geral == 'Clouds': geral = 'Nublado'
     if geral == 'Clear': geral = 'Tempo aberto'
     if geral == 'Snow': geral = 'Nevando'
@@ -30,11 +31,6 @@ def gerarTexto(cidade):
     if geral == 'Thunderstorm': geral = 'Trovoadas'
 
 
-
-    requisicao = requests.get(link)
-    info = requisicao.json()
-
-    condicao_umidade = ''
     if (umidade < 30):
         condicao_umidade = "Umidade extremamente baixa"
     elif umidade < 50:

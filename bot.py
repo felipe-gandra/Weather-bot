@@ -1,24 +1,29 @@
 import credenciais
 import telebot
-import temp
+import weather
 
 
 bot = telebot.TeleBot(credenciais.token_bot)
 
-@bot.message_handler(commands = ['tempo'])
+@bot.message_handler(commands = ['tempo'])  # Função que le a cidade para verificar o tempo
 def cidade(mensagem):
     cidade = mensagem.text
-    cidade = cidade[7:]
+
+    if (len(mensagem.text) < 7):
+        bot.send_message(mensagem.chat.id, "Digite um nome de cidade válido")
+        return
+    
+    cidade = cidade[7:] #corta o '/tempo'
+
     bot.send_message(mensagem.chat.id, f"Procurando informações sobre: {cidade}")
-    texto = temp.gerarTexto(cidade)
+    texto = weather.gerarTexto(cidade)  #gera o texto de resposta com base nos dados climaticos
     bot.send_message(mensagem.chat.id, texto)
 
 
-
-def verificar(mensagem):
+def verificar(mensagem):  #retorna true se houver mensagem no chat
     return True
 
-@bot.message_handler(func=verificar)
+@bot.message_handler(func=verificar) #mensagem padrão
 def inicio(mensagem):
     texto = """
     Este é um bot criado para fornecer informações sobre o tempo.
